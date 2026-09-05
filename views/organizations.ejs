@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+
+<main class="content-block">
+  <h1>Partner Organizations</h1>
+  <p class="subtitle">Empowering non-profits and community groups making a real-world impact.</p>
+
+  <% if (organizations && organizations.length > 0) { %>
+    <div class="card-grid">
+      <% organizations.forEach(function(org) { %>
+        <article class="card-item">
+          <div class="card-header-flex">
+            <img 
+              src="/images/logos/<%= org.logo_filename %>" 
+              alt="<%= org.name %> Logo" 
+              class="org-logo"
+              loading="lazy"
+              onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=default';" 
+            />
+            <h2 class="card-title"><%= org.name %></h2>
+          </div>
+
+          <div class="card-body">
+            <p class="card-description"><%= org.description %></p>
+            <ul class="meta-list">
+              <li><strong>Location:</strong> <%= org.location %></li>
+              <li><strong>Contact:</strong> <a href="mailto:<%= org.contact_email %>"><%= org.contact_email %></a></li>
+              <li><strong>Established:</strong> <%= new Date(org.date_created).toLocaleDateString() %></li>
+            </ul>
+          </div>
+
+          <div class="card-footer">
+            <a href="mailto:<%= org.contact_email %>" class="btn-sm">Contact Organization &rarr;</a>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="subtitle">No partner organizations found in the database system.</p>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>
