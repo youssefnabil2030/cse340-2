@@ -1,40 +1,60 @@
-<footer class="footer">
+<footer class="site-footer">
   <div class="footer-container">
-    <div class="footer-brand">
-      <div class="footer-logo-group">
-        <img 
-          src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=100&auto=format&fit=crop&q=80" 
-          alt="ImpactNet Logo" 
-          class="footer-logo" 
-        />
-        <span class="footer-title">ImpactNet</span>
+    
+    <!-- Column 1: Brand Info -->
+    <div class="footer-col brand-col">
+      <h3 class="footer-logo">Brand<span>.</span></h3>
+      <p class="footer-desc">
+        Empowering ideas through modern technology and strategic execution. Building the future, one step at a time.
+      </p>
+      <div class="social-links">
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
       </div>
-      <p class="footer-tagline">Connecting volunteers, non-profits, and communities to drive real-world impact.</p>
     </div>
 
-    <div class="footer-links-group">
-      <h4>Navigation</h4>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/organizations">Organizations</a></li>
-        <li><a href="/projects">Projects</a></li>
-        <li><a href="/categories">Categories</a></li>
+    <!-- Column 2: Navigation Links -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Careers</a></li>
       </ul>
     </div>
 
-    <div class="footer-links-group">
-      <h4>Platform</h4>
-      <ul>
-        <li><a href="/organizations">Get Involved</a></li>
-        <li><a href="/projects">Active Initiatives</a></li>
+    <!-- Column 3: Resource Links -->
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul class="footer-links">
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Support</a></li>
       </ul>
     </div>
+
+    <!-- Column 4: Contact / Newsletter -->
+    <div class="footer-col">
+      <h4>Stay Connected</h4>
+      <p class="newsletter-text">Subscribe to receive the latest updates and announcements.</p>
+      <form class="newsletter-form" onsubmit="event.preventDefault();">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit">Join</button>
+      </form>
+    </div>
+
   </div>
 
+  <!-- Bottom Bar -->
   <div class="footer-bottom">
-    <p>&copy; <%= new Date().getFullYear() %> ImpactNet. All rights reserved.</p>
+    <div class="footer-bottom-container">
+      <p>&copy; 2026 Brand Inc. All rights reserved.</p>
+    </div>
   </div>
 </footer>
 
-</body>
-</html>
+<!-- FontAwesome for Social Icons (Include in <head> if not already present) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
