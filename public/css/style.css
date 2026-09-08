@@ -165,7 +165,33 @@ body {
   margin-bottom: 1.5rem;
   font-size: 0.95rem;
 }
+/* Card Image Container */
+.category-image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  background-color: #e5e7eb;
 
+  /* Centers the image container content both horizontally and vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card Image Element */
+.category-card-img {
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  max-height: 300px;
+  object-fit: cover;
+  
+  /* Ensures the focal point of the image stays perfectly centered */
+  object-position: center; 
+  display: block;
+}
 /* Footer */
 .site-footer {
   background-color: #111827;
