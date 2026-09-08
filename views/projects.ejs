@@ -14,7 +14,10 @@
               src="<%= project.image_url || 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&auto=format&fit=crop&q=80' %>" 
               alt="<%= project.name %> Image" 
               class="category-card-img"
+              width="600"
+              height="300"
               loading="lazy"
+              decoding="async"
               onerror="this.src='https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&auto=format&fit=crop&q=80';"
             />
           </div>
@@ -43,5 +46,7 @@
     <p class="subtitle">No active projects currently available in the database system.</p>
   <% } %>
 </main>
+
+<%- include('partials/footer') %>
 
 <%- include('partials/footer') %>
