@@ -14,7 +14,7 @@ const FALLBACK_POOL = [
   'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&auto=format&fit=crop&q=80'
 ];
 
-// 1. جلب كل التصنيفات (الكود الأصلي بتاعك)
+// 1. Fetch all categories and attach display images
 const getAllCategories = async () => {
   try {
     const sql = "SELECT * FROM public.categories ORDER BY name ASC";
@@ -33,10 +33,10 @@ const getAllCategories = async () => {
   }
 };
 
-// 2. جلب تصنيف واحد بالـ ID (جديد للـ assignment)
+// 2. Fetch a single category by category_id
 const getCategoryById = async (id) => {
   try {
-    const sql = "SELECT * FROM public.categories WHERE id = $1";
+    const sql = "SELECT * FROM public.categories WHERE category_id = $1";
     const result = await db.query(sql, [id]);
     return result.rows[0];
   } catch (error) {
@@ -45,14 +45,14 @@ const getCategoryById = async (id) => {
   }
 };
 
-// 3. جلب المشاريع المربوطة بتصنيف معين (جديد للـ assignment)
+// 3. Fetch projects associated with a specific category (junction join)
 const getProjectsByCategory = async (categoryId) => {
   try {
     const sql = `
       SELECT p.*, o.name AS organization_name 
       FROM public.projects p
-      JOIN public.project_categories pc ON p.id = pc.project_id
-      LEFT JOIN public.organizations o ON p.organization_id = o.id
+      JOIN public.project_categories pc ON p.project_id = pc.project_id
+      LEFT JOIN public.organizations o ON p.organization_id = o.organization_id
       WHERE pc.category_id = $1
     `;
     const result = await db.query(sql, [categoryId]);
@@ -63,13 +63,13 @@ const getProjectsByCategory = async (categoryId) => {
   }
 };
 
-// 4. جلب التصنيفات الخاصة بمشروع معين (جديد للـ Category Tags في صفحة المشروع)
+// 4. Fetch categories assigned to a specific project (used for project detail tags)
 const getCategoriesByProject = async (projectId) => {
   try {
     const sql = `
       SELECT c.* 
       FROM public.categories c
-      JOIN public.project_categories pc ON c.id = pc.category_id
+      JOIN public.project_categories pc ON c.category_id = pc.category_id
       WHERE pc.project_id = $1
     `;
     const result = await db.query(sql, [projectId]);
