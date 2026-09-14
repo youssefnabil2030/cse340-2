@@ -85,6 +85,17 @@ app.get('/categories', async (req, res) => {
     }
 });
 
+// Render Disaster Relief Page
+app.get('/disaster-relief', (req, res) => {
+  res.render('disaster-relief', { pageTitle: 'Disaster Relief' });
+});
+
+// Render Education & Youth Page
+app.get('/education', (req, res) => {
+  res.render('education', { pageTitle: 'Education & Youth' });
+});
+
+
 app.listen(port, () => {
     console.log(`Application is running on port ${port}`);
 });
