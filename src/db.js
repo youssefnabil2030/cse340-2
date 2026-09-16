@@ -7,7 +7,7 @@ const { Pool } = pg;
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('localhost') 
+    ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('DATABASE_URL=postgresql://user:password@dpg-dabk6j2jobas73aafppg-a.oregon-postgres.render.com/dbname') 
         ? false 
         : { rejectUnauthorized: false }
 });
