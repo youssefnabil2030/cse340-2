@@ -1,10 +1,11 @@
 import db from '../db.js';
 
 const CATEGORY_IMAGES = {
+  'Community Outreach': 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&auto=format&fit=crop&q=80',
   'Environmental Cleanup': 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=500&auto=format&fit=crop&q=80',
   'Education & Tutoring': 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&auto=format&fit=crop&q=80',
-  'Community Outreach': 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&auto=format&fit=crop&q=80',
-  'Disaster Relief': 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=500&auto=format&fit=crop&q=80'
+  'Disaster Relief': 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=500&auto=format&fit=crop&q=80',
+  'Healthcare Support': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=500&auto=format&fit=crop&q=80'
 };
 
 const FALLBACK_POOL = [
@@ -14,7 +15,7 @@ const FALLBACK_POOL = [
   'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&auto=format&fit=crop&q=80'
 ];
 
-// 1. Fetch all categories and attach display images
+// 1. Fetch all categories with dynamic fallback image attachment
 const getAllCategories = async () => {
   try {
     const sql = "SELECT * FROM public.categories ORDER BY name ASC";
@@ -45,7 +46,7 @@ const getCategoryById = async (id) => {
   }
 };
 
-// 3. Fetch projects associated with a specific category (junction join)
+// 3. Fetch projects associated with a specific category
 const getProjectsByCategory = async (categoryId) => {
   try {
     const sql = `
@@ -54,6 +55,7 @@ const getProjectsByCategory = async (categoryId) => {
       JOIN public.project_categories pc ON p.project_id = pc.project_id
       LEFT JOIN public.organizations o ON p.organization_id = o.organization_id
       WHERE pc.category_id = $1
+      ORDER BY p.start_date DESC;
     `;
     const result = await db.query(sql, [categoryId]);
     return result.rows;
@@ -63,7 +65,7 @@ const getProjectsByCategory = async (categoryId) => {
   }
 };
 
-// 4. Fetch categories assigned to a specific project (used for project detail tags)
+// 4. Fetch categories assigned to a specific project
 const getCategoriesByProject = async (projectId) => {
   try {
     const sql = `
@@ -71,6 +73,7 @@ const getCategoriesByProject = async (projectId) => {
       FROM public.categories c
       JOIN public.project_categories pc ON c.category_id = pc.category_id
       WHERE pc.project_id = $1
+      ORDER BY c.name ASC;
     `;
     const result = await db.query(sql, [projectId]);
     return result.rows;
