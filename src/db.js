@@ -1,15 +1,27 @@
 // src/db.js
 import pg from 'pg';
-import dotenv from 'dotenv';
-dotenv.config();
+import { config } from './config.js';
 
 const { Pool } = pg;
 
+if (!config.databaseUrl) {
+    console.error('❌ DATABASE_URL is missing in .env file!');
+}
+
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('localhost') 
+    connectionString: config.databaseUrl,
+    ssl: config.isLocal
         ? false 
         : { rejectUnauthorized: false }
+});
+
+// اختبار الاتصال عند التشغيل لمعرفة حالة السيرفر
+pool.connect((err, client, release) => {
+    if (err) {
+        return console.error('❌ Database Connection Error:', err.message);
+    }
+    console.log('✅ Connected to PostgreSQL successfully!');
+    release();
 });
 
 export default pool;
