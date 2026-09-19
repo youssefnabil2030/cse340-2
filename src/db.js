@@ -5,23 +5,25 @@ import { config } from './config.js';
 const { Pool } = pg;
 
 if (!config.databaseUrl) {
-    console.error('❌ DATABASE_URL is missing in .env file!');
+    console.error('⚠️ WARNING: DATABASE_URL is not set in environment variables!');
 }
 
 const pool = new Pool({
     connectionString: config.databaseUrl,
-    ssl: config.isLocal
+    // Render أو خدمات السحاب بتتطلب SSL دائماً
+    ssl: config.isLocal 
         ? false 
         : { rejectUnauthorized: false }
 });
 
-// اختبار الاتصال عند التشغيل لمعرفة حالة السيرفر
+// اختبار الاتصال عند الإقلاع للتحقق من الصحة
 pool.connect((err, client, release) => {
     if (err) {
-        return console.error('❌ Database Connection Error:', err.message);
+        console.error('❌ Database Connection Error:', err.message);
+    } else {
+        console.log('✅ Connected to PostgreSQL successfully!');
+        release();
     }
-    console.log('✅ Connected to PostgreSQL successfully!');
-    release();
 });
 
 export default pool;
