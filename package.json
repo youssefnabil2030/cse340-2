@@ -1,0 +1,16 @@
+{
+  "name": "cse340-w01-project",
+  "version": "1.0.0",
+  "description": "CSE 340 Week 01 Initial Site Creation",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  }
+}
