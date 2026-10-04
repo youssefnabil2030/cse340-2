@@ -1,6 +1,6 @@
-import Category from './src/models/categories.js';
-import { getEducationProjects } from './src/models/education.js';
-import { getReliefProjects } from './src/models/relief.js';
+import Category from '../models/categories.js';
+import { getEducationProjects } from '../models/education.js';
+import { getReliefProjects } from '../models/relief.js';
 
 // 1. عرض كل التصنيفات
 export const getCategoriesPage = async (req, res, next) => {
@@ -67,15 +67,18 @@ export const getNewCategoryPage = (req, res) => {
 export const createCategory = async (req, res, next) => {
   try {
     const { name, description } = req.body;
-    // Server-side Validation
-    if (!name || name.trim().length < 3) {
+    const trimmedName = name ? name.trim() : '';
+
+    // Server-side Validation: يجب أن يحتوي على اسم وبطول من 3 إلى 100 حرف
+    if (!trimmedName || trimmedName.length < 3 || trimmedName.length > 100) {
       return res.render('new-category', {
         pageTitle: 'Add Category',
-        errors: ['Category name must be at least 3 characters long.'],
+        errors: ['Category name is required and must be between 3 and 100 characters long.'],
         formData: { name, description }
       });
     }
-    await Category.create({ name, description });
+
+    await Category.create({ name: trimmedName, description });
     res.redirect('/categories');
   } catch (error) {
     next(error);
@@ -98,14 +101,18 @@ export const updateCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, description } = req.body;
-    if (!name || name.trim().length < 3) {
+    const trimmedName = name ? name.trim() : '';
+
+    // Server-side Validation: يجب أن يحتوي على اسم وبطول من 3 إلى 100 حرف
+    if (!trimmedName || trimmedName.length < 3 || trimmedName.length > 100) {
       return res.render('edit-category', {
         pageTitle: 'Edit Category',
         category: { id, name, description },
-        errors: ['Category name must be at least 3 characters long.']
+        errors: ['Category name is required and must be between 3 and 100 characters long.']
       });
     }
-    await Category.update(id, { name, description });
+
+    await Category.update(id, { name: trimmedName, description });
     res.redirect('/categories');
   } catch (error) {
     next(error);
