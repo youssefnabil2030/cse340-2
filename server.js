@@ -4,11 +4,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
-// ✅ 1. تصحيح المسارات المحلية (لأننا بالفعل داخل مجلد src)
-import db from './db.js';
-import Organization from './models/organizations.js';
-import Project from './models/projects.js';
-import categoriesRouter from './routes/categories.route.js';
+// ✅ طالما server.js بره في الـ Root، بنحتاج ندخل جوه src/
+import db from './src/db.js';
+import Organization from './src/models/organizations.js';
+import Project from './src/models/projects.js';
+import categoriesRouter from './src/routes/categories.route.js';
 
 dotenv.config();
 
@@ -20,14 +20,14 @@ const __dirname = path.dirname(__filename);
 
 app.set('view engine', 'ejs');
 
-// ✅ 2. ضبط المسارات بالشكل الصحيح
-const viewsPath = fs.existsSync(path.join(__dirname, '../views')) 
-  ? path.join(__dirname, '../views') 
-  : path.join(__dirname, 'views');
+// ✅ ضبط مسار views و public بالنسبة للـ Root
+const viewsPath = fs.existsSync(path.join(__dirname, 'views')) 
+  ? path.join(__dirname, 'views') 
+  : path.join(__dirname, 'src/views');
 
-const publicPath = fs.existsSync(path.join(__dirname, '../public')) 
-  ? path.join(__dirname, '../public') 
-  : path.join(__dirname, 'public');
+const publicPath = fs.existsSync(path.join(__dirname, 'public')) 
+  ? path.join(__dirname, 'public') 
+  : path.join(__dirname, 'src/public');
 
 app.set('views', viewsPath);
 app.use(express.static(publicPath));
@@ -35,12 +35,12 @@ app.use(express.static(publicPath));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// ✅ 3. تشغيل الـ Setup بأمان داخل دالة Async لتفادي الـ Top-Level Await Crashes
+// ✅ تهيئة قاعدة البيانات بأمان
 async function initDb() {
   try {
     const sqlPath = fs.existsSync(path.join(__dirname, 'setup.sql'))
       ? path.join(__dirname, 'setup.sql')
-      : path.join(__dirname, '../setup.sql');
+      : path.join(__dirname, 'src/setup.sql');
 
     if (fs.existsSync(sqlPath)) {
       const sql = fs.readFileSync(sqlPath, 'utf8');
@@ -50,7 +50,7 @@ async function initDb() {
       console.log("⚠️ setup.sql not found, skipping auto-init.");
     }
   } catch (err) {
-    console.error("❌ Database setup failed (Server will continue running):", err.message);
+    console.error("❌ Database setup failed (Server running anyway):", err.message);
   }
 }
 
@@ -95,7 +95,6 @@ app.get('/projects', async (req, res) => {
 // 4) Categories Router
 app.use('/', categoriesRouter);
 
-// ✅ 4. بدء السيرفر بعد محاولة تهيئة القاعدة
 app.listen(port, async () => {
   console.log(`🚀 Application is running on port ${port}`);
   await initDb();
