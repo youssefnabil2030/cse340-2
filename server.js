@@ -4,12 +4,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
-import db from './src/db.js';
-import Organization from './src/models/organizations.js';
-import Project from './src/models/projects.js';
-
-// 🟢 1. استيراد ملف الـ Routes المخصص للتصنيفات
-import categoriesRouter from './src/routes/categories.route.js';
+// ✅ 1. تعديل مسارات الـ Imports الجانبية (حذف ./src/)
+import db from './db.js';
+import Organization from './models/organizations.js';
+import Project from './models/projects.js';
+import categoriesRouter from './routes/categories.route.js';
 
 dotenv.config();
 
@@ -20,15 +19,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
 
-// 🟢 2. قراءة بيانات الـ Form من نوع POST (ضروري جداً لعمليات الـ Insert & Update)
+// ✅ 2. ضبط مسار مجلد views ومجلد static ليخرج خطوة للخارج لو كانوا في Root أو يبقوا كما هم
+app.set('views', path.join(__dirname, '../views')); // أو 'views' لو مجلد views جوة src
+app.use(express.static(path.join(__dirname, '../public'))); // أو 'public' لو جوة src
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 try {
-  const sql = fs.readFileSync('./src/setup.sql', 'utf8');
+  // ✅ 3. تعديل مسار setup.sql
+  const sql = fs.readFileSync(path.join(__dirname, 'setup.sql'), 'utf8');
   await db.query(sql);
   console.log("Database initialized successfully!");
 } catch (err) {
@@ -72,7 +73,7 @@ app.get('/projects', async (req, res) => {
   }
 });
 
-// 🟢 3. تفعيل الـ Router الخاص بـ Categories (يشمل /categories, /categories/relief, /categories/education, /new-category, الخ)
+// 4) Categories Router
 app.use('/', categoriesRouter);
 
 app.listen(port, () => {
