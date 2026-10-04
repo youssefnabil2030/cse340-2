@@ -10,20 +10,28 @@ if (!config.databaseUrl) {
 
 const pool = new Pool({
     connectionString: config.databaseUrl,
-    // Render أو خدمات السحاب بتتطلب SSL دائماً
     ssl: config.isLocal 
         ? false 
         : { rejectUnauthorized: false }
 });
 
-// اختبار الاتصال عند الإقلاع للتحقق من الصحة
-pool.connect((err, client, release) => {
-    if (err) {
-        console.error('❌ Database Connection Error:', err.message);
-    } else {
-        console.log('✅ Connected to PostgreSQL successfully!');
-        release();
-    }
+// ✅ إمساك الأخطاء المفاجئة للـ Idle Clients لمنع سقوط السيرفر
+pool.on('error', (err) => {
+    console.error('❌ Unexpected error on idle database client:', err.message);
 });
+
+// ✅ اختبار الاتصال باستخدام Async/Await لمنع الـ Unhandled Rejection
+async function testConnection() {
+    try {
+        const client = await pool.connect();
+        console.log('✅ Connected to PostgreSQL successfully!');
+        client.release();
+    } catch (err) {
+        console.error('❌ Database Connection Error:', err.message);
+        // لا نضع process.exit هنا حتى يستمر السيرفر في العمل ويستجيب للطلبات الأخرى إن أمكن
+    }
+}
+
+testConnection();
 
 export default pool;
