@@ -8,8 +8,8 @@ services:
     name: cse340-community-service
     env: node
     plan: free
-    buildCommand: bun install
-    startCommand: bun start
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: PORT
         value: 3000
