@@ -1,6 +1,6 @@
 import Category from '../models/categories.js';
-import { getEducationProjects } from '../models/education.js';
-import { getReliefProjects } from '../models/relief.js';
+import { getEducationProjects } from './src/models/education.js';
+import { getReliefProjects } from './src/models/relief.js';
 
 // 1. عرض كل التصنيفات
 export const getCategoriesPage = async (req, res, next) => {
