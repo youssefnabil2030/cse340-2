@@ -8,7 +8,7 @@ import {
   createCategory,
   getEditCategoryPage,
   updateCategory
-} from '../controllers/categories.controller.js';
+} from './src/controllers/categories.controller.js';
 
 const router = Router();
 
