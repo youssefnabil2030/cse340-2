@@ -83,17 +83,57 @@ const getCategoriesByProject = async (projectId) => {
   }
 };
 
+// 🟢 5. Create a new category
+const createCategory = async ({ name, description }) => {
+  try {
+    const sql = `
+      INSERT INTO public.categories (name, description)
+      VALUES ($1, $2)
+      RETURNING *;
+    `;
+    const result = await db.query(sql, [name, description]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error inside createCategory model: ", error);
+    throw error;
+  }
+};
+
+// 🟢 6. Update an existing category by category_id
+const updateCategory = async (id, { name, description }) => {
+  try {
+    const sql = `
+      UPDATE public.categories
+      SET name = $1, description = $2
+      WHERE category_id = $3
+      RETURNING *;
+    `;
+    const result = await db.query(sql, [name, description, id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error inside updateCategory model: ", error);
+    throw error;
+  }
+};
+
 export default {
   getAll: getAllCategories,
+  getById: getCategoryById,
   getAllCategories,
   getCategoryById,
   getProjectsByCategory,
-  getCategoriesByProject
+  getCategoriesByProject,
+  create: createCategory,
+  update: updateCategory,
+  createCategory,
+  updateCategory
 };
 
 export {
   getAllCategories,
   getCategoryById,
   getProjectsByCategory,
-  getCategoriesByProject
+  getCategoriesByProject,
+  createCategory,
+  updateCategory
 };
