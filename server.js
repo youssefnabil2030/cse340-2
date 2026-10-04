@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 
 // ✅ 1. تعديل مسارات الـ Imports الجانبية (حذف ./src/)
-import db from 'src/db.js';
+import db from './src/db.js';
 import Organization from './models/organizations.js';
 import Project from './models/projects.js';
 import categoriesRouter from './routes/categories.route.js';
