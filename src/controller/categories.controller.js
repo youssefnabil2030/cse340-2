@@ -1,35 +1,27 @@
-import categoryModel from '../models/categories.js';
+import { getEducationProjects } from '../models/education.js';
+import { getReliefProjects } from '../models/relief.js';
 
-// عرض صفحة كل التصنيفات
-export const getCategoriesPage = async (req, res, next) => {
+// Controller لصفحة Education
+export const getEducationPage = async (req, res, next) => {
   try {
-    const categories = await categoryModel.getAllCategories();
-    res.render('categories', {
-      title: 'Categories',
-      categories
+    const projects = await getEducationProjects();
+    res.render('category-details', {
+      title: 'Education & Tutoring',
+      category: { name: 'Education & Tutoring', description: 'Explore tutoring and educational service projects.' },
+      projects
     });
   } catch (error) {
     next(error);
   }
 };
 
-// عرض صفحة تفاصيل تصنيف معين (جديد)
-export const getCategoryDetails = async (req, res, next) => {
+// Controller لصفحة Relief
+export const getReliefPage = async (req, res, next) => {
   try {
-    const categoryId = req.params.id;
-    const category = await categoryModel.getCategoryById(categoryId);
-
-    if (!category) {
-      const err = new Error('Category not found');
-      err.status = 404;
-      return next(err);
-    }
-
-    const projects = await categoryModel.getProjectsByCategory(categoryId);
-
+    const projects = await getReliefProjects();
     res.render('category-details', {
-      title: category.name,
-      category,
+      title: 'Disaster Relief',
+      category: { name: 'Disaster Relief', description: 'Explore disaster relief and community aid projects.' },
       projects
     });
   } catch (error) {
