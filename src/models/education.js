@@ -10,9 +10,9 @@ const getEducationProjects = async () => {
     const sql = `
       SELECT p.*, o.name AS organization_name 
       FROM public.projects p
-      JOIN public.project_categories pc ON p.id = pc.project_id
-      JOIN public.categories c ON pc.category_id = c.id
-      LEFT JOIN public.organizations o ON p.organization_id = o.id
+      JOIN public.project_categories pc ON p.project_id = pc.project_id
+      JOIN public.categories c ON pc.category_id = c.category_id
+      LEFT JOIN public.organizations o ON p.organization_id = o.organization_id
       WHERE c.name ILIKE '%Education%' OR c.name ILIKE '%Tutoring%'
       ORDER BY p.name ASC
     `;

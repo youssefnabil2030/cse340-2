@@ -1,0 +1,77 @@
+<%- include('partials/header') %>
+
+<main class="content-block">
+  <h1><%= typeof title !== 'undefined' ? title : 'Add New Organization' %></h1>
+  <p class="subtitle">Create a new partner organization.</p>
+
+  <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+    <div class="alert alert-error" role="alert">
+      <ul>
+        <% errors.forEach(function(error) { %>
+          <li><%= error %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form action="/new-organization" method="POST" class="form-card" novalidate>
+    <div class="form-group">
+      <label for="name">Organization Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value="<%= typeof formData !== 'undefined' && formData.name ? formData.name : '' %>"
+        required
+        maxlength="150"
+        placeholder="e.g. Hope Worldwide"
+      />
+      <small class="form-hint">Required, 3–150 characters.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        required
+        maxlength="500"
+        rows="4"
+        placeholder="What does this organization do?"
+      ><%= typeof formData !== 'undefined' && formData.description ? formData.description : '' %></textarea>
+      <small class="form-hint">Required, max 500 characters.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="contactEmail">Contact Email</label>
+      <input
+        type="email"
+        id="contactEmail"
+        name="contactEmail"
+        value="<%= typeof formData !== 'undefined' && formData.contactEmail ? formData.contactEmail : '' %>"
+        required
+        placeholder="contact@example.org"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        value="<%= typeof formData !== 'undefined' && formData.location ? formData.location : '' %>"
+        required
+        maxlength="150"
+        placeholder="e.g. Rexburg, ID"
+      />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Create Organization</button>
+      <a href="/organizations" class="btn-secondary">Cancel</a>
+    </div>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

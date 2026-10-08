@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+
+<main class="content-block">
+  <h1><%= category.name %></h1>
+  <% if (category.description) { %>
+    <p class="subtitle"><%= category.description %></p>
+  <% } else { %>
+    <p class="subtitle">Projects filed under this service category.</p>
+  <% } %>
+
+  <% if (typeof projects !== 'undefined' && projects && projects.length > 0) { %>
+    <div class="card-grid">
+      <% projects.forEach(function(p) { %>
+        <article class="card-item">
+          <div class="card-body">
+            <h2 class="card-title"><%= p.name %></h2>
+            <p class="card-description"><%= p.description %></p>
+          </div>
+          <div class="card-footer">
+            <a href="/project/<%= p.project_id %>" class="btn-sm">View Project &rarr;</a>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="subtitle">No projects are currently assigned to this category.</p>
+  <% } %>
+
+  <p style="margin-top: 2rem;">
+    <% if (category.category_id) { %>
+      <a href="/edit-category/<%= category.category_id %>" class="btn-sm">Edit Category &rarr;</a>
+    <% } %>
+    <a href="/categories" class="btn-sm">Back to Categories</a>
+  </p>
+</main>
+
+<%- include('partials/footer') %>

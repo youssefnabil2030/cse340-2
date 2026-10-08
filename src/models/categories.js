@@ -83,15 +83,18 @@ const getCategoriesByProject = async (projectId) => {
   }
 };
 
-// 🟢 5. Create a new category
+// 🟢 5. Create a new category (schema: category_id, name only)
 const createCategory = async ({ name, description }) => {
   try {
+    // NOTE: categories table only has a `name` column (see setup.sql).
+    // `description` is accepted for API compatibility but is not stored.
+    const trimmed = (name || '').trim();
     const sql = `
-      INSERT INTO public.categories (name, description)
-      VALUES ($1, $2)
+      INSERT INTO public.categories (name)
+      VALUES ($1)
       RETURNING *;
     `;
-    const result = await db.query(sql, [name, description]);
+    const result = await db.query(sql, [trimmed]);
     return result.rows[0];
   } catch (error) {
     console.error("Error inside createCategory model: ", error);
@@ -99,16 +102,17 @@ const createCategory = async ({ name, description }) => {
   }
 };
 
-// 🟢 6. Update an existing category by category_id
+// 🟢 6. Update an existing category by category_id (schema: name only)
 const updateCategory = async (id, { name, description }) => {
   try {
+    const trimmed = (name || '').trim();
     const sql = `
       UPDATE public.categories
-      SET name = $1, description = $2
-      WHERE category_id = $3
+      SET name = $1
+      WHERE category_id = $2
       RETURNING *;
     `;
-    const result = await db.query(sql, [name, description, id]);
+    const result = await db.query(sql, [trimmed, id]);
     return result.rows[0];
   } catch (error) {
     console.error("Error inside updateCategory model: ", error);

@@ -4,6 +4,8 @@
   <h1>Service Categories</h1>
   <p class="subtitle">Filter community initiatives by primary service domain.</p>
 
+  <p style="margin-bottom: 1.5rem;"><a href="/new-category" class="btn-primary">Add a new category</a></p>
+
   <% if (categories && categories.length > 0) { %>
     <ul class="categories-list">
       <% categories.forEach(function(category) { %>
@@ -19,6 +21,11 @@
           </div>
           <div class="category-info">
             <span class="category-title"><%= category.name %></span>
+            <span class="category-actions">
+              <a href="/category/<%= category.category_id %>" class="btn-sm">View</a>
+              &middot;
+              <a href="/edit-category/<%= category.category_id %>" class="btn-sm">Edit</a>
+            </span>
           </div>
         </li>
       <% }) %>

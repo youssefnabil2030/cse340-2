@@ -1,3 +1,6 @@
+# Dependencies
+node_modules/
+
 # Environmental variables
 .env
 .env.local

@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+
+<main class="content-block">
+  <h1><%= organization.name %></h1>
+  <p class="subtitle"><%= organization.location %> &middot; <%= organization.contact_email %></p>
+
+  <div class="card-item">
+    <div class="card-body">
+      <p class="card-description"><%= organization.description %></p>
+      <ul class="meta-list">
+        <li><strong>Contact:</strong> <a href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a></li>
+        <li><strong>Location:</strong> <%= organization.location %></li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="/edit-organization/<%= organization.organization_id %>" class="btn-sm">Edit Organization &rarr;</a>
+      <a href="/organizations" class="btn-sm">Back to Organizations</a>
+    </div>
+  </div>
+
+  <h2 style="margin-top: 2rem;">Service Projects</h2>
+  <% if (projects && projects.length > 0) { %>
+    <ul class="meta-list">
+      <% projects.forEach(function(p) { %>
+        <li><a href="/project/<%= p.project_id %>"><%= p.name %></a></li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="subtitle">No projects for this organization yet.</p>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>

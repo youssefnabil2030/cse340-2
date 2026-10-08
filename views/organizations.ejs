@@ -4,6 +4,8 @@
   <h1>Partner Organizations</h1>
   <p class="subtitle">Empowering non-profits and community groups making a real-world impact.</p>
 
+  <p style="margin-bottom: 1.5rem;"><a href="/new-organization" class="btn-primary">Add a new organization</a></p>
+
   <% if (organizations && organizations.length > 0) { %>
     <div class="card-grid">
       <% organizations.forEach(function(org) { %>
@@ -29,7 +31,9 @@
           </div>
 
           <div class="card-footer">
-            <a href="mailto:<%= org.contact_email %>" class="btn-sm">Contact Organization &rarr;</a>
+            <a href="/organization/<%= org.organization_id %>" class="btn-sm">View Details</a>
+            &middot;
+            <a href="/edit-organization/<%= org.organization_id %>" class="btn-sm">Edit &rarr;</a>
           </div>
         </article>
       <% }) %>

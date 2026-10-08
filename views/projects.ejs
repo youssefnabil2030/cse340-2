@@ -4,6 +4,8 @@
   <h1>Community Projects</h1>
   <p class="subtitle">Explore active initiatives driving community outreach and environmental protection.</p>
 
+  <p style="margin-bottom: 1.5rem;"><a href="/new-project" class="btn-primary">Add a new project</a></p>
+
   <% if (projects && projects.length > 0) { %>
     <div class="card-grid">
       <% projects.forEach(function(project) { %>
@@ -36,7 +38,11 @@
           </div>
 
           <div class="card-footer" style="justify-content: space-between; align-items: center;">
-            <span class="badge badge-progress">Community Initiative</span>
+            <span>
+              <a href="/project/<%= project.project_id %>" class="btn-sm">View</a>
+              &middot;
+              <a href="/edit-project/<%= project.project_id %>" class="btn-sm">Edit</a>
+            </span>
             <span style="font-size: 0.8rem; color: var(--text-muted);">ID: <%= project.project_id %></span>
           </div>
         </article>

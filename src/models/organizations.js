@@ -51,15 +51,59 @@ const getProjectsByOrganization = async (orgId) => {
   }
 };
 
+// 4. Create a new organization.
+// Schema: organization_id, name, description, contact_email,
+//         logo_filename, location, date_created
+const createOrganization = async (name, description, contactEmail, logoFilename = 'default-logo.png', location = 'Unknown') => {
+  try {
+    const sql = `
+      INSERT INTO public.organizations (name, description, contact_email, logo_filename, location)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING organization_id;
+    `;
+    const result = await db.query(sql, [name, description, contactEmail, logoFilename, location]);
+    if (result.rows.length === 0) {
+      throw new Error('Failed to create organization');
+    }
+    return result.rows[0].organization_id;
+  } catch (error) {
+    console.error("Error inside createOrganization model: ", error);
+    throw error;
+  }
+};
+
+// 5. Update an existing organization by organization_id
+const updateOrganization = async (id, name, description, contactEmail, logoFilename, location) => {
+  try {
+    const sql = `
+      UPDATE public.organizations
+      SET name = $1, description = $2, contact_email = $3, logo_filename = $4, location = $5
+      WHERE organization_id = $6
+      RETURNING *;
+    `;
+    const result = await db.query(sql, [name, description, contactEmail, logoFilename, location, id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error inside updateOrganization model: ", error);
+    throw error;
+  }
+};
+
 export default {
   getAll: getAllOrganizations,
   getAllOrganizations,
   getOrganizationById,
-  getProjectsByOrganization
+  getProjectsByOrganization,
+  create: createOrganization,
+  update: updateOrganization,
+  createOrganization,
+  updateOrganization
 };
 
 export {
   getAllOrganizations,
   getOrganizationById,
-  getProjectsByOrganization
+  getProjectsByOrganization,
+  createOrganization,
+  updateOrganization
 };

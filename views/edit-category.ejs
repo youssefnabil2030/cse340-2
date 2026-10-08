@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<main class="content-block">
+  <h1><%= typeof title !== 'undefined' ? title : 'Edit Category' %></h1>
+  <p class="subtitle">Update the name of this service category.</p>
+
+  <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+    <div class="alert alert-error" role="alert">
+      <ul>
+        <% errors.forEach(function(error) { %>
+          <li><%= error %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form action="/edit-category/<%= category.category_id %>" method="POST" class="form-card" novalidate>
+    <div class="form-group">
+      <label for="name">Category Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value="<%= category.name %>"
+        required
+        maxlength="100"
+      />
+      <small class="form-hint">Required, max 100 characters.</small>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Update Category</button>
+      <a href="/categories" class="btn-secondary">Cancel</a>
+    </div>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

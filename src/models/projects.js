@@ -62,15 +62,58 @@ const getOrganizations = async () => {
   }
 };
 
+// 4. Create a new service project.
+// Schema: project_id, name, description, location, start_date, organization_id
+const createProject = async (title, description, location, date, organizationId) => {
+  try {
+    const sql = `
+      INSERT INTO public.projects (name, description, location, start_date, organization_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING project_id;
+    `;
+    const result = await db.query(sql, [title, description, location, date, organizationId]);
+    if (result.rows.length === 0) {
+      throw new Error('Failed to create project');
+    }
+    return result.rows[0].project_id;
+  } catch (error) {
+    console.error("Error inside createProject model: ", error);
+    throw error;
+  }
+};
+
+// 5. Update an existing service project by project_id
+const updateProject = async (id, title, description, location, date, organizationId) => {
+  try {
+    const sql = `
+      UPDATE public.projects
+      SET name = $1, description = $2, location = $3, start_date = $4, organization_id = $5
+      WHERE project_id = $6
+      RETURNING *;
+    `;
+    const result = await db.query(sql, [title, description, location, date, organizationId, id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error inside updateProject model: ", error);
+    throw error;
+  }
+};
+
 export default {
   getAll: getAllProjects,
   getAllProjects,
   getProjectById,
-  getOrganizations
+  getOrganizations,
+  create: createProject,
+  update: updateProject,
+  createProject,
+  updateProject
 };
 
 export {
   getAllProjects,
   getProjectById,
-  getOrganizations
+  getOrganizations,
+  createProject,
+  updateProject
 };

@@ -1,0 +1,89 @@
+<%- include('partials/header') %>
+
+<main class="content-block">
+  <h1><%= typeof title !== 'undefined' ? title : 'Add New Service Project' %></h1>
+  <p class="subtitle">Create a new community service project.</p>
+
+  <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+    <div class="alert alert-error" role="alert">
+      <ul>
+        <% errors.forEach(function(error) { %>
+          <li><%= error %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form action="/new-project" method="POST" class="form-card" novalidate>
+    <div class="form-group">
+      <label for="title">Project Title</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="<%= typeof formData !== 'undefined' && formData.title ? formData.title : '' %>"
+        required
+        maxlength="200"
+        placeholder="e.g. City Food Drive"
+      />
+      <small class="form-hint">Required, 3–200 characters.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        required
+        maxlength="1000"
+        rows="4"
+        placeholder="Describe the project goals and activities."
+      ><%= typeof formData !== 'undefined' && formData.description ? formData.description : '' %></textarea>
+      <small class="form-hint">Required, max 1000 characters.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        value="<%= typeof formData !== 'undefined' && formData.location ? formData.location : '' %>"
+        required
+        maxlength="200"
+        placeholder="e.g. Rexburg, ID"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="date">Start Date</label>
+      <input
+        type="date"
+        id="date"
+        name="date"
+        value="<%= typeof formData !== 'undefined' && formData.date ? formData.date : '' %>"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="organizationId">Organization</label>
+      <select id="organizationId" name="organizationId" required>
+        <option value="">-- Select an organization --</option>
+        <% (typeof organizations !== 'undefined' ? organizations : []).forEach(function(org) { %>
+          <option
+            value="<%= org.organization_id %>"
+            <%= (typeof formData !== 'undefined' && String(formData.organizationId) === String(org.organization_id)) ? 'selected' : '' %>
+          ><%= org.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Create Project</button>
+      <a href="/projects" class="btn-secondary">Cancel</a>
+    </div>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

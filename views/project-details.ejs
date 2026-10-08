@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<main class="content-block">
+  <h1><%= project.name %></h1>
+  <p class="subtitle"><%= project.location %> &middot; Started <%= project.start_date ? new Date(project.start_date).toLocaleDateString() : 'N/A' %></p>
+
+  <div class="card-item">
+    <div class="card-body">
+      <p class="card-description"><%= project.description %></p>
+      <ul class="meta-list">
+        <li><strong>Organization:</strong> <%= project.organization_name || ('#' + project.organization_id) %></li>
+        <li><strong>Location:</strong> <%= project.location %></li>
+      </ul>
+      <% if (typeof categories !== 'undefined' && categories && categories.length > 0) { %>
+        <p>
+          <% categories.forEach(function(c) { %>
+            <span class="badge badge-progress"><%= c.name %></span>
+          <% }) %>
+        </p>
+      <% } %>
+    </div>
+    <div class="card-footer">
+      <a href="/edit-project/<%= project.project_id %>" class="btn-sm">Edit Project &rarr;</a>
+      <a href="/projects" class="btn-sm">Back to Projects</a>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/footer') %>
